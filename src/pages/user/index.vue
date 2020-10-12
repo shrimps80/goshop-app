@@ -31,21 +31,21 @@
 
 
       <view class="order-section">
-        <view class="order-item" hover-class="common-hover" :hover-stay-time="50">
+        <view class="order-item" @click="navTo('/pages/order/order?state=0')" hover-class="common-hover" :hover-stay-time="50">
           <view class="badge">123</view>
           <text class="yticon icon-shouye"></text>
           <text>全部订单</text>
         </view>
-        <view class="order-item" hover-class="common-hover" :hover-stay-time="50">
+        <view class="order-item" @click="navTo('/pages/order/order?state=1')" hover-class="common-hover" :hover-stay-time="50">
           <view class="badge">123</view>
           <text class="yticon icon-daifukuan"></text>
           <text>待付款</text>
         </view>
-        <view class="order-item" hover-class="common-hover" :hover-stay-time="50">
+        <view class="order-item" @click="navTo('/pages/order/order?state=2')" hover-class="common-hover" :hover-stay-time="50">
           <text class="yticon icon-yishouhuo"></text>
           <text>待收货</text>
         </view>
-        <view class="order-item" hover-class="common-hover" :hover-stay-time="50">
+        <view class="order-item" @click="navTo('/pages/order/order?state=3')" hover-class="common-hover" :hover-stay-time="50">
           <view class="badge">123</view>
           <text class="yticon icon-shouhoutuikuan"></text>
           <text>退款/售后</text>

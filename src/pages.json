@@ -38,6 +38,12 @@
       }
     },
     {
+      "path": "pages/order/order",
+      "style": {
+        "navigationBarTitleText": "我的订单"
+      }
+    },
+    {
       "path": "pages/public/login",
       "style": {
         "navigationBarTitleText": "",

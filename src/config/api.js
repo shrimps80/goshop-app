@@ -11,6 +11,8 @@ const methodsToken = [
     'address/detail',
     'address/add',
     'address/edit',
+
+    'order/index',
 ];
 
 const request = (url, method, data, returnCode = false) => {
@@ -99,6 +101,9 @@ export const addressDetail = (data) => request('address/detail', 'get', data);
 export const addressAdd = (data) => request('address/add', 'post', data);
 // 编辑收货地址
 export const addressEdit = (data) => request('address/edit', 'post', data);
+
+// 获取用户订单
+export const orderList = (data) => request('order/index', 'get', data);
 
 // 获取分类列表
 export const categoryList = () => request('category/index', 'get');
