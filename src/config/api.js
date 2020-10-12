@@ -4,7 +4,13 @@ import * as common from './common.js'
 // 登录路由
 const methodsToken = [
     'cart/index',
+
     'member/info',
+
+    'address/index',
+    'address/detail',
+    'address/add',
+    'address/edit',
 ];
 
 const request = (url, method, data, returnCode = false) => {
@@ -76,11 +82,23 @@ Promise.prototype.finally = function (callback) {
     );
 }
 
+// 获取省市区
+export const getAreaList = () => request('common/get-area-list', 'get');
+
 // 用户登录 - 手机密码登录
 export const login = (data) => request('common/mobile-login', 'post', data, true);
 
 // 用户详情
 export const info = () => request('member/info', 'get');
+
+// 获取用户收货地址
+export const addressList = () => request('address/index', 'get');
+// 根据收货地址id获取详情
+export const addressDetail = (data) => request('address/detail', 'get', data);
+// 新增收货地址
+export const addressAdd = (data) => request('address/add', 'post', data);
+// 编辑收货地址
+export const addressEdit = (data) => request('address/edit', 'post', data);
 
 // 获取分类列表
 export const categoryList = () => request('category/index', 'get');

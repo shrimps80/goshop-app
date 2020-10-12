@@ -26,12 +26,14 @@
   position: relative;
   z-index: 1;
   text-align: center;
+
   .portrait {
     width: 130upx;
     height: 130upx;
     border: 5upx solid #fff;
     border-radius: 50%;
   }
+
   .username {
     font-size: $font-lg + 6upx;
     color: $font-color-dark;
@@ -88,6 +90,7 @@
     color: $font-color-dark;
     position: relative;
   }
+
   .badge {
     left: 80upx;
     top: -6upx;
