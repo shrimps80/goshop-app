@@ -8,7 +8,7 @@ export default {
     return {}
   },
   onLoad() {
-
+    console.log(this.$common.get("user_token"))
   },
   methods: {}
 }

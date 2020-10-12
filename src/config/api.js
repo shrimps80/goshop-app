@@ -12,11 +12,7 @@ const request = (url, method, data) => {
             data: data,
             header: header,
             success(request) {
-                if (request.data.code < 0) {
-                    common.msg(request.data.message)
-                    return
-                }
-                resolve(request.data.data)
+                resolve(request.data)
             },
             fail(error) {
                 reject(error)
@@ -25,10 +21,8 @@ const request = (url, method, data) => {
                 // 加载完成
                 if (req.statusCode == 401) {
                     // 强制登录
-                    common.msg("请登录")
-                    uni.navigateTo({
-                        url: '/pages/public/login'
-                    })
+                    common.msg(req.data.message)
+                    common.toLogin()
                     return
                 }
             }
@@ -56,6 +50,8 @@ Promise.prototype.finally = function (callback) {
     );
 }
 
+// 用户登录 - 手机密码登录
+export const login = (data) => request('common/mobile-login', 'post', data);
 
 // 获取分类列表
 export const categoryList = () => request('category/index', 'get');
