@@ -8,9 +8,14 @@ export default {
     return {}
   },
   onLoad() {
-
+    this.loadData();
   },
-  methods: {}
+  methods: {
+    async loadData() {
+      let cartData = await this.$api.cartList();
+      console.log(cartData)
+    }
+  }
 }
 </script>
 
