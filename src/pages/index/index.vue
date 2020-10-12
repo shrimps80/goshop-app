@@ -3,16 +3,13 @@
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-			}
-		},
-		onLoad() {
+export default {
+  data() {
+    return {}
+  },
+  onLoad() {
 
-		},
-		methods: {
-
-		}
-	}
+  },
+  methods: {}
+}
 </script>
