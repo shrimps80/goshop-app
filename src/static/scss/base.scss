@@ -13,6 +13,20 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.badge {
+  display: inline-block;
+  position: absolute;
+  min-width: 13px;
+  height: 13px;
+  line-height: 13px;
+  background-color: #FF7159;
+  color: #fff;
+  font-size: 12px;
+  border-radius: 50upx;
+  padding: 0 3px;
+  z-index: 99;
+}
+
 .icon-yiguoqi1:before {
   content: "\e700";
 }

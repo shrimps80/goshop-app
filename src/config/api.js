@@ -4,6 +4,7 @@ import * as common from './common.js'
 // 登录路由
 const methodsToken = [
     'cart/index',
+    'member/info',
 ];
 
 const request = (url, method, data, returnCode = false) => {
@@ -77,6 +78,9 @@ Promise.prototype.finally = function (callback) {
 
 // 用户登录 - 手机密码登录
 export const login = (data) => request('common/mobile-login', 'post', data, true);
+
+// 用户详情
+export const info = () => request('member/info', 'get');
 
 // 获取分类列表
 export const categoryList = () => request('category/index', 'get');
