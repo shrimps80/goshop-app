@@ -1,10 +1,25 @@
 import {apiBaseUrl} from './config.js';
 import * as common from './common.js'
 
-const request = (url, method, data) => {
+// 登录路由
+const methodsToken = [
+    'cart/index',
+];
+
+const request = (url, method, data, returnCode = false) => {
     let header = {
         'Content-Type': 'application/x-www-form-urlencoded'
     };
+    // 判断token是否存在
+    if (methodsToken.indexOf(url) >= 0) {
+        // 获取用户token
+        let userToken = common.get("user_token");
+        if (!userToken) {
+            common.toLogin()
+            return
+        }
+        header.token = userToken
+    }
     return new Promise((resolve, reject) => {
         uni.request({
             url: apiBaseUrl + url,
@@ -12,7 +27,17 @@ const request = (url, method, data) => {
             data: data,
             header: header,
             success(request) {
-                resolve(request.data)
+                if (returnCode) {
+                    resolve(request.data)
+                    return
+                }
+
+                if (request.code < 0) {
+                    common.msg(request.data.message)
+                    return
+                }
+
+                resolve(request.data.data)
             },
             fail(error) {
                 reject(error)
@@ -51,7 +76,7 @@ Promise.prototype.finally = function (callback) {
 }
 
 // 用户登录 - 手机密码登录
-export const login = (data) => request('common/mobile-login', 'post', data);
+export const login = (data) => request('common/mobile-login', 'post', data, true);
 
 // 获取分类列表
 export const categoryList = () => request('category/index', 'get');
