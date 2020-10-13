@@ -23,13 +23,37 @@
               <text v-if="item.order_status===5" class="del-btn yticon icon-iconfontshanchu1" @click="deleteOrder(index)"></text>
             </view>
 
-            <scroll-view v-if="item.order_items.length > 1" class="goods-box" scroll-x>
-              <view v-for="(goodsItem, goodsIndex) in item.order_items" :key="goodsIndex" class="goods-item">
-                <image class="goods-img" :src="goodsItem.image" mode="aspectFill"></image>
-              </view>
-            </scroll-view>
+            <view @click="clickItem(item)">
+              <scroll-view v-if="item.order_items.length > 1" class="goods-box" scroll-x>
+                <view v-for="(goodsItem, goodsIndex) in item.order_items" :key="goodsIndex" class="goods-item">
+                  <image class="goods-img" :src="imageBaseUrl+goodsItem.image" mode="aspectFill"></image>
+                </view>
+              </scroll-view>
 
+              <view v-if="item.order_items.length === 1" class="goods-box-single" v-for="(goodsItem, goodsIndex) in item.order_items" :key="goodsIndex">
+                <image class="goods-img" :src="imageBaseUrl+goodsItem.image" mode="aspectFill"></image>
+                <view class="right">
+                  <text class="title clamp">{{ goodsItem.name }}</text>
+                  <text class="attr-box">{{ goodsItem.price }} x {{ goodsItem.qty_ordered }}</text>
+                  <text class="price">{{ goodsItem.total_payable }}</text>
+                </view>
+              </view>
+            </view>
+
+            <view class="price-box">
+              共
+              <text class="num">{{ item.total_qty_ordered }}</text>
+              件商品 实付款
+              <text class="price">{{ item.grand_total }}</text>
+            </view>
+
+            <view class="action-box b-t" v-if="item.order_status != 5">
+              <button class="action-btn" @click="cancelOrder(item)">取消订单</button>
+              <button class="action-btn recom">立即支付</button>
+            </view>
           </view>
+
+          <uni-load-more :status="tabItem.loadingType"></uni-load-more>
         </scroll-view>
       </swiper-item>
     </swiper>
@@ -38,9 +62,15 @@
 </template>
 
 <script>
+import uniLoadMore from '@/components/uni-load-more.vue';
+
 export default {
+  components: {
+    uniLoadMore
+  },
   data() {
     return {
+      imageBaseUrl: "",
       tabCurrentIndex: 0,
       navList: [
         {
@@ -74,9 +104,12 @@ export default {
           orderList: []
         }
       ],
+      page: 1,
+      pageSize: 2, // 每页订单显示数量
     }
   },
   onLoad(option) {
+    this.imageBaseUrl = this.$config.imageBaseUrl;
     this.tabCurrentIndex = +option.state;
     this.loadData();
   },
@@ -88,29 +121,55 @@ export default {
     //swiper 切换
     changeTab(e) {
       this.tabCurrentIndex = e.target.current;
-      this.loadData();
+      this.loadData("tabChange");
     },
-    async loadData() {
+    async loadData(source) {
       let index = this.tabCurrentIndex;
       let navItem = this.navList[index];
 
+      if (source === "tabChange") {
+        // 切换初始化
+        this.page = 1;
+        navItem.orderList = [];
+        navItem.loadingType = "more"
+      }
+
+      if (navItem.loadingType === 'noMore') {
+        return
+      }
+
       let req = {
-        page: 1,
-        page_size: 20,
+        page: this.page,
+        page_size: this.pageSize,
         order_status: navItem.state,
       }
       let orderList = await this.$api.orderList(req)
 
       if (orderList.total > 0) {
-        navItem.orderList = orderList.orders
-        //判断是否还有数据， 有改为 more， 没有改为noMore
-        if (orderList.orders.length < 20) {
-          navItem.loadingType = 'noMore';
+        for (let i in orderList.orders) {
+          navItem.orderList.push(orderList.orders[i])
         }
+
+        //判断是否还有数据， 有改为 more， 没有改为noMore
+        if (orderList.orders.length < 2) {
+          navItem.loadingType = 'noMore';
+        } else {
+          this.page++
+        }
+
       }
+    },
+    clickItem(item) {
+      uni.navigateTo({
+        url: `/pages/order/orderDetail?order_id=${item.order_id}`
+      })
+      console.log(item)
     },
     deleteOrder() {
       this.$common.msg("删除订单")
+    },
+    cancelOrder() {
+      this.$common.msg("取消订单")
     }
   }
 }
