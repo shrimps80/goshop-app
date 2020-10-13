@@ -151,7 +151,7 @@ export default {
         }
 
         //判断是否还有数据， 有改为 more， 没有改为noMore
-        if (orderList.orders.length < 2) {
+        if (orderList.orders.length < this.pageSize) {
           navItem.loadingType = 'noMore';
         } else {
           this.page++

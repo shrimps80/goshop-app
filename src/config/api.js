@@ -4,6 +4,9 @@ import * as common from './common.js'
 // 登录路由
 const methodsToken = [
     'cart/index',
+    'cart/add',
+    'cart/delete',
+    'cart/checked',
 
     'member/info',
 
@@ -41,8 +44,7 @@ const request = (url, method, data, returnCode = false) => {
                     resolve(request.data)
                     return
                 }
-
-                if (request.code < 0) {
+                if (request.data.code < 0) {
                     common.msg(request.data.message)
                     return
                 }
@@ -50,7 +52,7 @@ const request = (url, method, data, returnCode = false) => {
                 resolve(request.data.data)
             },
             fail(error) {
-                reject(error)
+                // reject(error)
             },
             complete(req) {
                 // 加载完成
@@ -112,5 +114,14 @@ export const orderInfo = (data) => request('order/info', 'get', data);
 // 获取分类列表
 export const categoryList = () => request('category/index', 'get');
 
+// 获取商品列表
+export const productList = (data) => request('product/index', 'get', data);
+
+// 根据商品id获取商品详情
+export const productDetail = (data) => request('product/detail', 'get', data);
+
 // 获取购物车列表
 export const cartList = () => request('cart/index', 'get');
+export const addCart = (data) => request('cart/add', 'post', data);
+export const delCart = (data) => request('cart/delete', 'post', data);
+export const checkedCart = (data) => request('cart/checked', 'post', data);
