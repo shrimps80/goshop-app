@@ -100,6 +100,8 @@ export const info = () => request('member/info', 'get');
 export const addressList = () => request('address/index', 'get');
 // 根据收货地址id获取详情
 export const addressDetail = (data) => request('address/detail', 'get', data);
+// 获取用户默认收货地址
+export const addressDefault = () => request('address/index', 'get', {page_size: 1});
 // 新增收货地址
 export const addressAdd = (data) => request('address/add', 'post', data);
 // 编辑收货地址

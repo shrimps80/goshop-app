@@ -250,7 +250,12 @@ export default {
     },
     //立即购买
     buy() {
+      let product_id = this.productId
+      let spec_id = this.specSelected.product_spec_id
 
+      uni.navigateTo({
+        url: `/pages/order/createOrder?product_id=${product_id}&id=${spec_id}`
+      })
     },
     addCart() {
       let req = {
