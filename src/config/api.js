@@ -107,7 +107,7 @@ export const addressEdit = (data) => request('address/edit', 'post', data);
 export const orderList = (data) => request('order/index', 'get', data);
 
 // 根据订单id获取订单详情
-export const orderDetail = (data) => request('order/info', 'get', data);
+export const orderInfo = (data) => request('order/info', 'get', data);
 
 // 获取分类列表
 export const categoryList = () => request('category/index', 'get');
