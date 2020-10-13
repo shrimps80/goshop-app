@@ -42,6 +42,7 @@ export default {
   },
   data() {
     return {
+      category_id: 0,
       imageBaseUrl: "",
       filterIndex: 0,
       priceOrder: 0, //1 价格从低到高 2价格从高到低
@@ -51,7 +52,8 @@ export default {
       pageSize: 20,
     }
   },
-  onLoad(options) {
+  onLoad(option) {
+    this.category_id = option.category_id
     this.imageBaseUrl = this.$config.imageBaseUrl;
     this.loadData();
   },
@@ -83,6 +85,7 @@ export default {
       let req = {
         page: this.page,
         page_size: this.pageSize,
+        category_id: this.category_id,
       }
       let products = await this.$api.productList(req);
 

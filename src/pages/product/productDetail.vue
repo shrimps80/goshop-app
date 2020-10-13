@@ -188,7 +188,9 @@ export default {
       let goods = await _this.$api.productDetail({"product_id": _this.productId})
 
       _this.goods = goods
-      _this.specList = JSON.parse(goods.spec_description);
+      if (goods.spec_description.length > 0) {
+        _this.specList = JSON.parse(goods.spec_description);
+      }
 
       //规格 默认选中第一条
       if (goods.spec && goods.spec.length > 0) {
