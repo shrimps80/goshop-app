@@ -86,34 +86,25 @@
 export default {
   data() {
     return {
-      imageBaseUrl: "",
+      imageBaseUrl: this.$config.imageBaseUrl,
       addressData: {},
       desc: "",
-      req: [], //请求计算
       buyDesc: {},
     }
   },
   onLoad(option) {
-    this.imageBaseUrl = this.$config.imageBaseUrl;
-    let param = {
-      cart_id: 0,
-      product_id: parseInt(option.product_id),
-      product_spec_id: parseInt(option.id),
-      num: 1,
-    }
-    this.req.push(param)
-    this.loadData()
+    this.loadData(option.data)
   },
   methods: {
-    async loadData() {
+    async loadData(data) {
       let addressData = await this.$api.addressDefault()
       if (addressData.length > 0) {
         this.addressData = addressData[0]
       }
 
-      if (this.req.length > 0) {
+      if (data.length > 0) {
         // 请求结算
-        this.buyDesc = await this.$api.buy({products: JSON.stringify(this.req)})
+        this.buyDesc = await this.$api.buy({products: data})
       }
     },
     showCoupons() {

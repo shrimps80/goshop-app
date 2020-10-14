@@ -250,11 +250,15 @@ export default {
     },
     //立即购买
     buy() {
-      let product_id = this.productId
-      let spec_id = this.specSelected.product_spec_id
-
+      let goodsData = [];
+      goodsData.push({
+        cart_id: 0,
+        product_id: parseInt(this.productId),
+        product_spec_id: parseInt(this.specSelected.product_spec_id),
+        num: 1
+      })
       uni.navigateTo({
-        url: `/pages/order/createOrder?product_id=${product_id}&id=${spec_id}`
+        url: `/pages/order/createOrder?data=${JSON.stringify(goodsData)}`
       })
     },
     addCart() {
