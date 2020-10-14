@@ -22,47 +22,14 @@
         <text class="name">商品列表</text>
       </view>
       <!-- 商品列表 -->
-      <view class="g-item">
-        <image src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1620020012,789258862&fm=26&gp=0.jpg"></image>
+      <view class="g-item" v-for="(item, index) in buyDesc.products" :key="index">
+        <image class="goods-img" :src="imageBaseUrl+item.image" mode="aspectFill"></image>
         <view class="right">
-          <text class="title clamp">韩版于是洞洞拖鞋 夏季浴室防滑简约居家【新人专享，限选意见】</text>
-          <text class="spec">春装款 L</text>
+          <text class="title clamp">{{ item.product_name }}</text>
+          <text class="spec">{{ item.spec_name }}</text>
           <view class="price-box">
-            <text class="price">￥17.8</text>
-            <text class="number">x 1</text>
-          </view>
-        </view>
-      </view>
-      <view class="g-item">
-        <image src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1620020012,789258862&fm=26&gp=0.jpg"></image>
-        <view class="right">
-          <text class="title clamp">韩版于是洞洞拖鞋 夏季浴室防滑简约居家【新人专享，限选意见】</text>
-          <text class="spec">春装款 L</text>
-          <view class="price-box">
-            <text class="price">￥17.8</text>
-            <text class="number">x 1</text>
-          </view>
-        </view>
-      </view>
-      <view class="g-item">
-        <image src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1620020012,789258862&fm=26&gp=0.jpg"></image>
-        <view class="right">
-          <text class="title clamp">韩版于是洞洞拖鞋 夏季浴室防滑简约居家【新人专享，限选意见】</text>
-          <text class="spec">春装款 L</text>
-          <view class="price-box">
-            <text class="price">￥17.8</text>
-            <text class="number">x 1</text>
-          </view>
-        </view>
-      </view>
-      <view class="g-item">
-        <image src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1620020012,789258862&fm=26&gp=0.jpg"></image>
-        <view class="right">
-          <text class="title clamp">韩版于是洞洞拖鞋 夏季浴室防滑简约居家【新人专享，限选意见】</text>
-          <text class="spec">春装款 L</text>
-          <view class="price-box">
-            <text class="price">￥17.8</text>
-            <text class="number">x 1</text>
+            <text class="price">￥{{ item.price }}</text>
+            <text class="number">x {{ item.num }}</text>
           </view>
         </view>
       </view>
@@ -87,11 +54,11 @@
     <view class="yt-list">
       <view class="yt-list-cell b-b">
         <text class="cell-tit clamp">商品金额</text>
-        <text class="cell-tip">￥179.88</text>
+        <text class="cell-tip">￥{{ buyDesc.order_amount }}</text>
       </view>
       <view class="yt-list-cell b-b">
         <text class="cell-tit clamp">优惠金额</text>
-        <text class="cell-tip red">-￥35</text>
+        <text class="cell-tip red">-￥{{ buyDesc.order_promotion }}</text>
       </view>
       <view class="yt-list-cell b-b">
         <text class="cell-tit clamp">运费</text>
@@ -107,7 +74,7 @@
       <view class="price-content">
         <text>实付款</text>
         <text class="price-tip">￥</text>
-        <text class="price">475</text>
+        <text class="price">{{ buyDesc.order_amount }}</text>
       </view>
       <text class="submit">提交订单</text>
     </view>
@@ -119,11 +86,22 @@
 export default {
   data() {
     return {
+      imageBaseUrl: "",
       addressData: {},
       desc: "",
+      req: [], //请求计算
+      buyDesc: {},
     }
   },
-  onLoad() {
+  onLoad(option) {
+    this.imageBaseUrl = this.$config.imageBaseUrl;
+    let param = {
+      cart_id: 0,
+      product_id: parseInt(option.product_id),
+      product_spec_id: parseInt(option.id),
+      num: 1,
+    }
+    this.req.push(param)
     this.loadData()
   },
   methods: {
@@ -131,6 +109,11 @@ export default {
       let addressData = await this.$api.addressDefault()
       if (addressData.length > 0) {
         this.addressData = addressData[0]
+      }
+
+      if (this.req.length > 0) {
+        // 请求结算
+        this.buyDesc = await this.$api.buy({products: JSON.stringify(this.req)})
       }
     },
     showCoupons() {

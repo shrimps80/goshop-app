@@ -3,6 +3,8 @@ import * as common from './common.js'
 
 // 登录路由
 const methodsToken = [
+    'cart/buy',
+    
     'cart/index',
     'cart/add',
     'cart/delete',
@@ -124,6 +126,11 @@ export const productDetail = (data) => request('product/detail', 'get', data);
 
 // 获取购物车列表
 export const cartList = () => request('cart/index', 'get');
+// 添加购物车
 export const addCart = (data) => request('cart/add', 'post', data);
+// 删除购物车
 export const delCart = (data) => request('cart/delete', 'post', data);
+// 选择购物车
 export const checkedCart = (data) => request('cart/checked', 'post', data);
+// 立即购买
+export const buy = (data) => request('cart/buy', 'post', data);
