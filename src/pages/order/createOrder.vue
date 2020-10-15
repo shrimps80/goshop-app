@@ -76,7 +76,7 @@
         <text class="price-tip">￥</text>
         <text class="price">{{ buyDesc.order_amount }}</text>
       </view>
-      <text class="submit">提交订单</text>
+      <text class="submit" @click="submit" :disabled="isSubmit">提交订单</text>
     </view>
 
   </view>
@@ -90,6 +90,8 @@ export default {
       addressData: {},
       desc: "",
       buyDesc: {},
+      isSubmit: false,
+      products: [],
     }
   },
   onLoad(option) {
@@ -105,11 +107,28 @@ export default {
       if (data.length > 0) {
         // 请求结算
         this.buyDesc = await this.$api.buy({products: data})
+        this.products = data
+        this.isSubmit = true
       }
     },
     showCoupons() {
       this.$common.msg("来，展示优惠券！")
-    }
+    },
+    submit() {
+      this.isSubmit = false
+      let sendData = {
+        address_id: this.addressData.address_id,
+        products: this.products,
+        payment_code: 1,
+        node: this.desc,
+      }
+      this.$api.createOrder(sendData).then(function (res) {
+        let orderId = res.id
+        uni.redirectTo({
+          url: `/pages/money/pay?order_id=${orderId}`
+        })
+      })
+    },
   }
 }
 </script>

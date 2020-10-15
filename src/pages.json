@@ -79,6 +79,12 @@
       "style": {
         "navigationBarTitleText": "创建订单"
       }
+    },
+    {
+      "path": "pages/money/pay",
+      "style": {
+        "navigationBarTitleText": "支付"
+      }
     }
   ],
   "globalStyle": {

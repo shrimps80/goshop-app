@@ -4,7 +4,7 @@ import * as common from './common.js'
 // 登录路由
 const methodsToken = [
     'cart/buy',
-    
+
     'cart/index',
     'cart/add',
     'cart/delete',
@@ -19,6 +19,8 @@ const methodsToken = [
 
     'order/index',
     'order/info',
+
+    'order/create-order',
 ];
 
 const request = (url, method, data, returnCode = false) => {
@@ -134,3 +136,5 @@ export const delCart = (data) => request('cart/delete', 'post', data);
 export const checkedCart = (data) => request('cart/checked', 'post', data);
 // 立即购买
 export const buy = (data) => request('cart/buy', 'post', data);
+// 创建订单
+export const createOrder = (data) => request('order/create-order', 'post', data);

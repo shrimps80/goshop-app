@@ -49,7 +49,7 @@
 
             <view class="action-box b-t" v-if="item.order_status != 5">
               <button class="action-btn" @click="cancelOrder(item)">取消订单</button>
-              <button class="action-btn recom">立即支付</button>
+              <button class="action-btn recom" @click="pay(item)">立即支付</button>
             </view>
           </view>
 
@@ -170,6 +170,11 @@ export default {
     },
     cancelOrder() {
       this.$common.msg("取消订单")
+    },
+    pay(item) {
+      uni.navigateTo({
+        url: `/pages/money/pay?order_id=${item.order_id}`
+      })
     }
   }
 }
